@@ -4,240 +4,67 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>サイコロボックス | Pinda Lab</title>
-<meta name="description" content="d4/d6/d8/d10/d12/d20を最大6個振れるサイコロロール。ボードゲーム・TRPG・順番決めに。">
-<meta property="og:title" content="サイコロボックス">
-<meta property="og:description" content="6種類のダイスを最大6個振れる多機能サイコロ">
+<meta property="og:title" content="Dice Box">
 <meta property="og:url" content="https://pndshch.github.io/dice-box/">
-<meta name="twitter:card" content="summary">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-body {
-    background: linear-gradient(180deg, #1a0a2a 0%, #0d0a2a 100%);
-    color: #e6edf3;
-    font-family: 'Hiragino Sans', system-ui, sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 24px 16px 32px;
-    user-select: none;
-}
-.topbar {
-    width: 100%; max-width: 480px;
-    display: flex; justify-content: space-between;
-    color: #6d7680; font-size: 12px; margin-bottom: 12px;
-}
+body { background: linear-gradient(180deg, #1a0a2a 0%, #0d0a2a 100%); color: #e6edf3; font-family: 'Hiragino Sans', system-ui, sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 24px 16px 32px; user-select: none; }
+.lang-switch { position: fixed; top: 12px; right: 12px; display: flex; gap: 2px; background: rgba(22,27,34,0.9); border: 1px solid #30363d; border-radius: 8px; padding: 3px; z-index: 1000; }
+.lang-btn { background: transparent; border: none; color: #7d8590; font-size: 11px; font-weight: 600; padding: 4px 8px; border-radius: 5px; cursor: pointer; font-family: system-ui, sans-serif; }
+.lang-btn.active { background: #c084fc; color: #1a0a2a; }
+.topbar { width: 100%; max-width: 480px; display: flex; justify-content: space-between; color: #6d7680; font-size: 12px; margin-bottom: 12px; }
 .topbar a { color: #6d7680; text-decoration: none; }
-.brand-title {
-    font-size: 30px; font-weight: 800; text-align: center;
-    background: linear-gradient(135deg, #c084fc, #ec4899);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-}
+.brand-title { font-size: 30px; font-weight: 800; text-align: center; background: linear-gradient(135deg, #c084fc, #ec4899); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .brand-sub { color: #8b949e; font-size: 13px; text-align: center; margin-top: 4px; margin-bottom: 16px; }
-
-.config {
-    width: 100%;
-    max-width: 480px;
-    background: #161b22;
-    border: 1px solid #30363d;
-    border-radius: 14px;
-    padding: 14px;
-    margin-bottom: 12px;
-}
-.cfg-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-}
+.config { width: 100%; max-width: 480px; background: #161b22; border: 1px solid #30363d; border-radius: 14px; padding: 14px; margin-bottom: 12px; }
+.cfg-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
 .cfg-row:last-child { margin-bottom: 0; }
-.cfg-label {
-    font-size: 11px;
-    color: #8b949e;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    min-width: 60px;
-}
-.die-types {
-    display: flex;
-    gap: 6px;
-    flex: 1;
-    flex-wrap: wrap;
-}
-.die-btn {
-    flex: 1;
-    min-width: 50px;
-    padding: 10px 4px;
-    background: #21262d;
-    border: 2px solid #30363d;
-    color: #fff;
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 800;
-    border-radius: 8px;
-    cursor: pointer;
-}
-.die-btn.active {
-    background: linear-gradient(135deg, #a855f7, #ec4899);
-    border-color: #c084fc;
-}
-.count-row {
-    display: flex;
-    gap: 6px;
-}
-.count-btn {
-    flex: 1;
-    padding: 10px;
-    background: #21262d;
-    border: 2px solid #30363d;
-    color: #fff;
-    font-family: inherit;
-    font-size: 14px;
-    font-weight: 800;
-    border-radius: 8px;
-    cursor: pointer;
-}
-.count-btn.active {
-    background: linear-gradient(135deg, #a855f7, #ec4899);
-    border-color: #c084fc;
-}
-
-.dice-area {
-    width: 100%;
-    max-width: 480px;
-    background: rgba(0,0,0,0.3);
-    border: 2px dashed #30363d;
-    border-radius: 14px;
-    padding: 24px;
-    min-height: 200px;
-    margin-bottom: 12px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    justify-content: center;
-    align-items: center;
-}
-.die {
-    width: 76px;
-    height: 76px;
-    background: linear-gradient(145deg, #ffffff, #e2e8f0);
-    color: #1e293b;
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 36px;
-    font-weight: 900;
-    font-variant-numeric: tabular-nums;
-    box-shadow:
-        0 6px 12px rgba(0,0,0,0.4),
-        inset 0 -3px 0 rgba(0,0,0,0.1),
-        inset 0 3px 0 rgba(255,255,255,0.5);
-    transition: transform 0.15s;
-}
-.die.rolling {
-    animation: roll 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
+.cfg-label { font-size: 11px; color: #8b949e; letter-spacing: 1px; text-transform: uppercase; min-width: 60px; }
+.die-types { display: flex; gap: 6px; flex: 1; flex-wrap: wrap; }
+.die-btn { flex: 1; min-width: 50px; padding: 10px 4px; background: #21262d; border: 2px solid #30363d; color: #fff; font-family: inherit; font-size: 13px; font-weight: 800; border-radius: 8px; cursor: pointer; }
+.die-btn.active { background: linear-gradient(135deg, #a855f7, #ec4899); border-color: #c084fc; }
+.count-row { display: flex; gap: 6px; }
+.count-btn { flex: 1; padding: 10px; background: #21262d; border: 2px solid #30363d; color: #fff; font-family: inherit; font-size: 14px; font-weight: 800; border-radius: 8px; cursor: pointer; }
+.count-btn.active { background: linear-gradient(135deg, #a855f7, #ec4899); border-color: #c084fc; }
+.dice-area { width: 100%; max-width: 480px; background: rgba(0,0,0,0.3); border: 2px dashed #30363d; border-radius: 14px; padding: 24px; min-height: 200px; margin-bottom: 12px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; align-items: center; }
+.die { width: 76px; height: 76px; background: linear-gradient(145deg, #ffffff, #e2e8f0); color: #1e293b; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; font-variant-numeric: tabular-nums; box-shadow: 0 6px 12px rgba(0,0,0,0.4), inset 0 -3px 0 rgba(0,0,0,0.1), inset 0 3px 0 rgba(255,255,255,0.5); transition: transform 0.15s; }
+.die.rolling { animation: roll 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
 .die.crit { background: linear-gradient(145deg, #fde68a, #f59e0b); color: #92400e; box-shadow: 0 0 24px rgba(245,158,11,0.6), 0 6px 12px rgba(0,0,0,0.4); }
 .die.fail { background: linear-gradient(145deg, #fecaca, #ef4444); color: #fff; box-shadow: 0 0 24px rgba(239,68,68,0.6), 0 6px 12px rgba(0,0,0,0.4); }
-@keyframes roll {
-    0% { transform: rotate(0) scale(1); }
-    25% { transform: rotate(140deg) scale(1.1); }
-    50% { transform: rotate(280deg) scale(0.95); }
-    75% { transform: rotate(420deg) scale(1.05); }
-    100% { transform: rotate(540deg) scale(1); }
-}
-
-.empty-msg {
-    color: #6d7680;
-    font-size: 14px;
-    text-align: center;
-}
-
-.summary {
-    width: 100%;
-    max-width: 480px;
-    display: flex;
-    gap: 8px;
-    margin-bottom: 12px;
-}
-.sum-cell {
-    flex: 1;
-    background: #161b22;
-    border: 1px solid #30363d;
-    padding: 8px;
-    border-radius: 8px;
-    text-align: center;
-}
+@keyframes roll { 0% { transform: rotate(0) scale(1); } 25% { transform: rotate(140deg) scale(1.1); } 50% { transform: rotate(280deg) scale(0.95); } 75% { transform: rotate(420deg) scale(1.05); } 100% { transform: rotate(540deg) scale(1); } }
+.empty-msg { color: #6d7680; font-size: 14px; text-align: center; }
+.summary { width: 100%; max-width: 480px; display: flex; gap: 8px; margin-bottom: 12px; }
+.sum-cell { flex: 1; background: #161b22; border: 1px solid #30363d; padding: 8px; border-radius: 8px; text-align: center; }
 .sum-label { font-size: 10px; color: #8b949e; }
 .sum-val { font-size: 22px; font-weight: 800; color: #fff; font-variant-numeric: tabular-nums; }
 .sum-val.total { color: #c084fc; }
-
-.actions {
-    display: flex;
-    gap: 8px;
-    width: 100%;
-    max-width: 480px;
-}
-.btn {
-    padding: 16px;
-    border: none;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 800;
-    font-family: inherit;
-    cursor: pointer;
-    color: #fff;
-}
+.actions { display: flex; gap: 8px; width: 100%; max-width: 480px; }
+.btn { padding: 16px; border: none; border-radius: 12px; font-size: 16px; font-weight: 800; font-family: inherit; cursor: pointer; color: #fff; }
 .btn:active { transform: scale(0.97); }
 .btn-roll { flex: 2; background: linear-gradient(135deg, #a855f7, #ec4899); font-size: 18px; }
 .btn-share { flex: 1; background: #1d9bf0; }
-
-.history {
-    margin-top: 14px;
-    width: 100%;
-    max-width: 480px;
-}
+.history { margin-top: 14px; width: 100%; max-width: 480px; }
 .history-label { color: #6d7680; font-size: 11px; margin-bottom: 6px; text-align: center; }
-.history-row {
-    display: flex;
-    gap: 6px;
-    overflow-x: auto;
-    padding-bottom: 4px;
-}
-.h-item {
-    flex-shrink: 0;
-    background: #161b22;
-    border: 1px solid #30363d;
-    border-radius: 16px;
-    padding: 6px 10px;
-    font-size: 12px;
-    color: #8b949e;
-    font-variant-numeric: tabular-nums;
-}
+.history-row { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; }
+.h-item { flex-shrink: 0; background: #161b22; border: 1px solid #30363d; border-radius: 16px; padding: 6px 10px; font-size: 12px; color: #8b949e; font-variant-numeric: tabular-nums; }
 .h-item .h-total { color: #c084fc; font-weight: 800; }
-
-.footer {
-    margin-top: 16px;
-    color: #6d7680;
-    font-size: 11px;
-    text-align: center;
-}
+.footer { margin-top: 16px; color: #6d7680; font-size: 11px; text-align: center; }
 .footer a { color: #6d7680; text-decoration: none; }
 </style>
 </head>
 <body>
-<div class="topbar">
-    <a href="https://pndshch.github.io/">← Pinda Lab</a>
-    <span>サイコロボックス</span>
+<div class="lang-switch">
+    <button class="lang-btn" data-lang="ja">JP</button>
+    <button class="lang-btn" data-lang="en">EN</button>
 </div>
+<div class="topbar"><a href="https://pndshch.github.io/" data-i18n="back">← Pinda Lab</a><span data-i18n="title">サイコロボックス</span></div>
 
-<div class="brand-title">サイコロボックス</div>
-<div class="brand-sub">6種のダイスを 最大6個 同時に</div>
+<div class="brand-title" data-i18n="title">サイコロボックス</div>
+<div class="brand-sub" data-i18n="subtitle">6種のダイスを 最大6個 同時に</div>
 
 <div class="config">
     <div class="cfg-row">
-        <span class="cfg-label">タイプ</span>
+        <span class="cfg-label" data-i18n="typeLabel">タイプ</span>
         <div class="die-types" id="types">
             <button class="die-btn" data-sides="4">d4</button>
             <button class="die-btn active" data-sides="6">d6</button>
@@ -248,7 +75,7 @@ body {
         </div>
     </div>
     <div class="cfg-row">
-        <span class="cfg-label">こすう</span>
+        <span class="cfg-label" data-i18n="countLabel">こすう</span>
         <div class="count-row" id="counts">
             <button class="count-btn active" data-c="1">1</button>
             <button class="count-btn" data-c="2">2</button>
@@ -261,54 +88,68 @@ body {
 </div>
 
 <div class="dice-area" id="dice-area">
-    <div class="empty-msg">「ふる」ボタンを おしてね</div>
+    <div class="empty-msg" data-i18n="pressRoll">「ふる」ボタンを おしてね</div>
 </div>
 
 <div class="summary">
-    <div class="sum-cell"><div class="sum-label">こすう</div><div class="sum-val" id="cnt">1</div></div>
-    <div class="sum-cell"><div class="sum-label">タイプ</div><div class="sum-val" id="typ">d6</div></div>
-    <div class="sum-cell"><div class="sum-label">ごうけい</div><div class="sum-val total" id="sum">—</div></div>
+    <div class="sum-cell"><div class="sum-label" data-i18n="cntLabel">こすう</div><div class="sum-val" id="cnt">1</div></div>
+    <div class="sum-cell"><div class="sum-label" data-i18n="typLabel">タイプ</div><div class="sum-val" id="typ">d6</div></div>
+    <div class="sum-cell"><div class="sum-label" data-i18n="sumLabel">ごうけい</div><div class="sum-val total" id="sum">—</div></div>
 </div>
 
 <div class="actions">
-    <button class="btn btn-roll" id="roll">🎲 ふる</button>
+    <button class="btn btn-roll" id="roll" data-i18n="roll">🎲 ふる</button>
     <button class="btn btn-share" id="share">𝕏</button>
 </div>
 
 <div class="history">
-    <div class="history-label">📜 さいきんの けっか</div>
+    <div class="history-label" data-i18n="historyLabel">📜 さいきんの けっか</div>
     <div class="history-row" id="hist"></div>
 </div>
 
-<div class="footer">
-    <p><a href="https://pndshch.github.io/">© Pinda Lab</a> · <a href="https://www.buymeacoffee.com/pndshch" target="_blank">☕</a></p>
-</div>
+<div class="footer"><p><a href="https://pndshch.github.io/">© Pinda Lab</a> · <a href="https://www.buymeacoffee.com/pndshch" target="_blank">☕</a></p></div>
 
 <script>
 'use strict';
+const I18N = {
+    ja: { title: 'サイコロボックス', subtitle: '6種のダイスを 最大6個 同時に', back: '← Pinda Lab',
+          typeLabel: 'タイプ', countLabel: 'こすう', cntLabel: 'こすう', typLabel: 'タイプ', sumLabel: 'ごうけい',
+          pressRoll: '「ふる」ボタンを おしてね', roll: '🎲 ふる',
+          historyLabel: '📜 さいきんの けっか', empty: 'まだ ふってない',
+          shareDefault: 'サイコロボックスでダイスを振ろう 🎲',
+          shareResult: (c, s, r, t) => `${c}d${s} の結果: ${r.join(' + ')} = ${t}` },
+    en: { title: 'Dice Box', subtitle: 'Roll up to 6 of 6 die types', back: '← Pinda Lab',
+          typeLabel: 'Type', countLabel: 'Count', cntLabel: 'Count', typLabel: 'Type', sumLabel: 'Total',
+          pressRoll: 'Press the Roll button', roll: '🎲 Roll',
+          historyLabel: '📜 Recent Rolls', empty: 'No rolls yet',
+          shareDefault: 'Roll some dice on Dice Box 🎲',
+          shareResult: (c, s, r, t) => `${c}d${s} result: ${r.join(' + ')} = ${t}` },
+};
+let curLang = 'ja';
+function applyLang(lang) {
+    curLang = lang;
+    const dict = I18N[lang] || I18N.ja;
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(el => { const key = el.dataset.i18n; if (typeof dict[key] === 'string') el.textContent = dict[key]; });
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+    try { localStorage.setItem('pl-lang', lang); } catch {}
+    document.title = dict.title + ' | Pinda Lab';
+    renderHistory();
+}
+document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', () => applyLang(btn.dataset.lang)));
+
 let sides = 6, count = 1;
 let history = [];
-
 const STORAGE = 'pl-dice-history';
 try { history = JSON.parse(localStorage.getItem(STORAGE)) || []; } catch {}
 
-function selectType(s) {
-    sides = s;
-    document.querySelectorAll('.die-btn').forEach(b => b.classList.toggle('active', parseInt(b.dataset.sides) === s));
-    document.getElementById('typ').textContent = 'd' + s;
-}
-function selectCount(c) {
-    count = c;
-    document.querySelectorAll('.count-btn').forEach(b => b.classList.toggle('active', parseInt(b.dataset.c) === c));
-    document.getElementById('cnt').textContent = c;
-}
+function selectType(s) { sides = s; document.querySelectorAll('.die-btn').forEach(b => b.classList.toggle('active', parseInt(b.dataset.sides) === s)); document.getElementById('typ').textContent = 'd' + s; }
+function selectCount(c) { count = c; document.querySelectorAll('.count-btn').forEach(b => b.classList.toggle('active', parseInt(b.dataset.c) === c)); document.getElementById('cnt').textContent = c; }
 function renderHistory() {
+    const dict = I18N[curLang] || I18N.ja;
     const h = document.getElementById('hist');
     h.innerHTML = '';
-    if (history.length === 0) {
-        h.innerHTML = '<span class="h-item" style="color:#4b5563">まだ ふってない</span>';
-        return;
-    }
+    if (history.length === 0) { h.innerHTML = `<span class="h-item" style="color:#4b5563">${dict.empty}</span>`; return; }
     history.slice(-15).reverse().forEach(r => {
         const it = document.createElement('span');
         it.className = 'h-item';
@@ -316,7 +157,6 @@ function renderHistory() {
         h.appendChild(it);
     });
 }
-
 function roll() {
     const area = document.getElementById('dice-area');
     area.innerHTML = '';
@@ -330,36 +170,31 @@ function roll() {
         if (v === sides && sides >= 6) d.classList.add('crit');
         else if (v === 1 && sides >= 6) d.classList.add('fail');
         area.appendChild(d);
-        // remove rolling class after animation
         setTimeout(() => d.classList.remove('rolling'), 800 + i * 60);
     }
     const total = rolls.reduce((a, b) => a + b, 0);
     document.getElementById('sum').textContent = total;
-
     history.push({ sides, count, rolls, total, t: Date.now() });
     if (history.length > 30) history.shift();
     try { localStorage.setItem(STORAGE, JSON.stringify(history)); } catch {}
     renderHistory();
 }
-
 document.querySelectorAll('.die-btn').forEach(b => b.addEventListener('click', () => selectType(parseInt(b.dataset.sides))));
 document.querySelectorAll('.count-btn').forEach(b => b.addEventListener('click', () => selectCount(parseInt(b.dataset.c))));
 document.getElementById('roll').addEventListener('click', roll);
 document.getElementById('share').addEventListener('click', () => {
+    const dict = I18N[curLang] || I18N.ja;
     const last = history[history.length - 1];
-    let txt = 'サイコロボックスでダイスを振ろう 🎲';
-    if (last) txt = `${last.count}d${last.sides} の結果: ${last.rolls.join(' + ')} = ${last.total}`;
+    let txt = dict.shareDefault;
+    if (last) txt = dict.shareResult(last.count, last.sides, last.rolls, last.total);
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(txt)}&url=${encodeURIComponent('https://pndshch.github.io/dice-box/')}`, '_blank', 'noopener');
 });
+document.addEventListener('keydown', (e) => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); roll(); } });
 
-document.addEventListener('keydown', (e) => {
-    if (e.key === ' ' || e.key === 'Enter') {
-        e.preventDefault();
-        roll();
-    }
-});
-
-renderHistory();
+let initLang;
+try { initLang = localStorage.getItem('pl-lang'); } catch {}
+if (!initLang) { const nav = (navigator.language || 'ja').toLowerCase(); initLang = nav.startsWith('ja') ? 'ja' : 'en'; }
+applyLang(initLang);
 </script>
 </body>
 </html>
